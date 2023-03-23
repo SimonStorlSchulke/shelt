@@ -1,0 +1,58 @@
+{
+  "kind": "collectionType",
+  "collectionName": "animals",
+  "info": {
+    "singularName": "animal",
+    "pluralName": "animals",
+    "displayName": "Animal",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Name": {
+      "type": "string"
+    },
+    "Gender": {
+      "type": "enumeration",
+      "enum": [
+        "female",
+        "male",
+        "other"
+      ]
+    },
+    "castrated": {
+      "type": "boolean"
+    },
+    "thumbnail": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "shoulderheight": {
+      "type": "integer",
+      "required": true,
+      "default": 35
+    },
+    "Description": {
+      "type": "richtext"
+    },
+    "custom_article_link": {
+      "type": "string"
+    },
+    "birthdate": {
+      "type": "date"
+    },
+    "Species": {
+      "type": "string"
+    },
+    "Race": {
+      "type": "string"
+    }
+  }
+}

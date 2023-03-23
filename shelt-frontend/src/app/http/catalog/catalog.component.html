@@ -1,0 +1,8 @@
+<div class="tile" *ngFor="let animal of animals">
+    <h3>
+        {{animal.attributes.Name}}
+    </h3>
+    <p>{{animal.attributes.Description}}</p>
+    <p>{{animal.attributes.Gender == "male" ? "♂" : "♀"}}</p>
+    <p>{{animal.attributes.shoulderheight}}</p>
+</div>
