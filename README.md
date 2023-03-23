@@ -15,14 +15,14 @@ To develop shelt locally, you need:
 *Strapi (Port 1337)*
 - `cd ./shelt-db`
 - `npm install` (when running for the first time)
-- `npm run develop`
+- run via VSCode F5 or `npm run develop`
 
 *Go (Port 8080)*
 - `cd ./shelt-backend`
 - `go mod tidy` (when running for the first time)
-
+- run via VSCode F5 or `go run .`
 
 *Angular (Port 4200)*
 - `cd ./shelt-frontend`
 - `npm install` (when running for the first time)
-- `ng serve --open` <- opens a browser window woth the frontend
+- run via VSCode F5 or `ng serve --open` <- opens a browser window woth the frontend
