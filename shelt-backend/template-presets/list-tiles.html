@@ -3,7 +3,14 @@
     {{ range $animal := . }}
     <div class="sh-tile">
 
+        <div class="sh-tags">
+            {{ range $tag := $animal.Tags.data }} <!--TODO - this is horrible syntax. In the future, this should be doable with .. := $animal.Tags-->
+            <p>{{$tag.attributes.Name}}</p> <!--...and $tag.Name-->
+            {{end}}
+        </div>
+
         <img src="http://localhost:1337{{$animal.Thumbnail.data.attributes.url}}">
+
 
         <div class="sh-tile-content">
             <h2>{{$animal.Name}}
@@ -28,6 +35,26 @@
         gap: 20px;
     }
 
+    .sh-tags {
+        position: absolute;
+        height: 140px;
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+        padding: 5px;
+        gap: 3px;
+    }
+
+    .sh-tags p {
+        background-color: rgb(235, 164, 13);
+        color: white;
+        border-radius: 20px;
+        padding: 2px 8px;
+        margin: 0px;
+        font-size: 12px;
+        width: fit-content;
+    }
+
     .sh-tile {
         width: 175px;
         background-color: #d8d8d8;
@@ -36,7 +63,7 @@
 
     .sh-tile img {
         width: 100%;
-        height: 140px;
+        height: 150px;
         object-fit: cover;
         overflow: hidden;
         border-radius: 5px 5px 0px 0px;

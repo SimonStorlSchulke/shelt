@@ -14,7 +14,7 @@
         </thead>
         <tbody>
             {{ range $animal := . }}
-            <tr>
+            <tr onclick='location.href="https://google.de"'>
                 <td style="padding-left: 0px;"><img
                         src="http://localhost:1337{{$animal.Thumbnail.data.attributes.url}}"></td>
                 <td>{{$animal.Name}}</td>
@@ -43,6 +43,7 @@
 
     tr:hover {
         outline: 2px solid orange;
+        cursor: pointer;
     }
 
     td img {

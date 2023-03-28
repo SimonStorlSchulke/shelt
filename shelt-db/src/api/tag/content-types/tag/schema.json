@@ -22,7 +22,9 @@
       "inversedBy": "Tags"
     },
     "Visible": {
-      "type": "boolean"
+      "type": "boolean",
+      "required": true,
+      "default": false
     }
   }
 }

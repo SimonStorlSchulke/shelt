@@ -20,7 +20,7 @@ func main() {
 	r.GET("/animal/:id", GetAnimalFieldsById)
 	r.GET("/animals", GetAnimalCollection)
 	r.GET("/animal-view", GetAnimalView)
-	r.GET("/animal-collection-view", GetAnimalCollectionView)
+	r.GET("/animal-collection-view", GetAnimalListView)
 	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
 
