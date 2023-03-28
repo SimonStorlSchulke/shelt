@@ -8,7 +8,6 @@ import (
 )
 
 func GetAnimalView(c *gin.Context) {
-	//templateId := c.Param("template-id")
 
 	animalUrl := "animals/" + c.Query("animal-id")
 	templateUrl := "templates/" + c.Query("template-id")
@@ -36,9 +35,8 @@ func GetAnimalView(c *gin.Context) {
 }
 
 func GetAnimalCollectionView(c *gin.Context) {
-	//templateId := c.Param("template-id")
 
-	templateUrl := "templates/" + c.Query("template-id")
+	templateUrl := "list-templates/" + c.Query("template-id")
 
 	//tags := c.Query("tags")
 
@@ -58,15 +56,17 @@ func GetAnimalCollectionView(c *gin.Context) {
 	animalCollectionData := animalCollectionStrapiData["data"].([]interface{})
 	templateData := templateStrapiData["data"].(map[string]interface{})["attributes"].(map[string]interface{})
 
-	fullHtml := ""
+	var animalList []map[string]interface{}
+
 	for _, animalStrapiData := range animalCollectionData {
 		animalData := animalStrapiData.(map[string]interface{})["attributes"]
-		html, err := RenderTemplate(templateData["Html"].(string), animalData.(map[string]interface{}))
+		animalList = append(animalList, animalData.(map[string]interface{}))
+
 		logErr(err)
-		fullHtml += html
 	}
+	html, err := RenderTemplate(templateData["Html"].(string), animalList)
 
 	logErr(err)
 
-	c.Data(http.StatusOK, "text/html; charset=utf-8", []byte(fullHtml))
+	c.Data(http.StatusOK, "text/html; charset=utf-8", []byte(html))
 }

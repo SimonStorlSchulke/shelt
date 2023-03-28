@@ -6,7 +6,7 @@ import (
 )
 
 // RenderTemplate executes a template on data and returns the fesulting html
-func RenderTemplate(templateString string, data map[string]interface{}) (string, error) {
+func RenderTemplate(templateString string, data any) (string, error) {
 
 	t := template.New("action")
 
