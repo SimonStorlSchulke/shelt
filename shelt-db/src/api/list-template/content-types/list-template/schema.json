@@ -8,17 +8,15 @@
     "description": ""
   },
   "options": {
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "pluginOptions": {},
   "attributes": {
-    "template": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::template.template"
-    },
     "Html": {
       "type": "text"
+    },
+    "Name": {
+      "type": "string"
     }
   }
 }

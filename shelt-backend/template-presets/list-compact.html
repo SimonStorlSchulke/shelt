@@ -1,0 +1,54 @@
+<div class="sh-list-wrapper">
+
+    <table cellspacing="0">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Name</th>
+                <th>Species</th>
+                <th>Gender</th>
+                <th>Born</th>
+                <th>Race</th>
+                <th>Height</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{ range $animal := . }}
+            <tr>
+                <td style="padding-left: 0px;"><img
+                        src="http://localhost:1337{{$animal.Thumbnail.data.attributes.url}}"></td>
+                <td>{{$animal.Name}}</td>
+                <td>{{$animal.Species}}</td>
+                <td>{{if (eq $animal.Gender "male")}} ♂ {{else}} ♀ {{end}}</td>
+                <td>{{$animal.Birthdate}}</td>
+                <td>{{$animal.Race}}</td>
+                <td>{{$animal.Shoulderheight}}</td>
+            </tr>
+            {{ end }}
+        </tbody>
+    </table>
+
+</div>
+
+<style>
+    td,
+    th {
+        padding: 0px 10px;
+        text-align: left;
+    }
+
+    tr:nth-of-type(2n) {
+        background-color: #eee;
+    }
+
+    tr:hover {
+        outline: 2px solid orange;
+    }
+
+    td img {
+        width: 64px;
+        height: 64px;
+        outline: 1px solid white;
+        object-fit: cover;
+    }
+</style>
