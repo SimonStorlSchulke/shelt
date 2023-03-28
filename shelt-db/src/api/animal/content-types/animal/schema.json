@@ -23,10 +23,10 @@
         "other"
       ]
     },
-    "castrated": {
+    "Castrated": {
       "type": "boolean"
     },
-    "thumbnail": {
+    "Thumbnail": {
       "type": "media",
       "multiple": false,
       "required": false,
@@ -34,7 +34,7 @@
         "images"
       ]
     },
-    "shoulderheight": {
+    "Shoulderheight": {
       "type": "integer",
       "required": true,
       "default": 35
@@ -42,10 +42,10 @@
     "Description": {
       "type": "richtext"
     },
-    "custom_article_link": {
+    "CustumArticleLink": {
       "type": "string"
     },
-    "birthdate": {
+    "Birthdate": {
       "type": "date"
     },
     "Species": {
@@ -53,6 +53,12 @@
     },
     "Race": {
       "type": "string"
+    },
+    "Tags": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::tag.tag",
+      "mappedBy": "Animals"
     }
   }
 }

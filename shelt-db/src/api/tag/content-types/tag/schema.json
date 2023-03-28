@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tags",
+  "info": {
+    "singularName": "tag",
+    "pluralName": "tags",
+    "displayName": "Tag",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Name": {
+      "type": "string"
+    },
+    "Animals": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::animal.animal",
+      "inversedBy": "Tags"
+    },
+    "Visible": {
+      "type": "boolean"
+    }
+  }
+}

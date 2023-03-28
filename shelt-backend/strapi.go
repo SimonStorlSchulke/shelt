@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/gin-gonic/gin"
@@ -35,10 +36,12 @@ func StrapiGet(url string) ([]byte, error) {
 	return body, nil
 }
 
-func BuildFieldsQuery(c *gin.Context) string {
+func BuildFieldsQuery(c *gin.Context) (string, int) {
 
 	fieldsQuery := c.Query("fields")
 	fieldsStrapiQuery := ""
+
+	var descriptionLength int
 
 	if fieldsQuery != "" {
 		fields := strings.Split(fieldsQuery, ",")
@@ -46,12 +49,24 @@ func BuildFieldsQuery(c *gin.Context) string {
 		fieldsStrapiQuery += "?"
 
 		for i, field := range fields {
-			fieldsStrapiQuery += fmt.Sprintf("fields[%d]=%s", i, field)
+
+			if len(field) > 11 && field[0:11] == "description" {
+				descriptionLength, _ = strconv.Atoi(field[12:])
+				field = "description"
+			}
+			if field == "Thumbnail" {
+				fieldsStrapiQuery += "populate[0][on][fields][0]=name"
+			} else {
+				fieldsStrapiQuery += fmt.Sprintf("fields[%d]=%s", i, field)
+			}
+
 			if i != len(fields)-1 {
 				fieldsStrapiQuery += "&"
 			}
 		}
 	}
 
-	return fieldsStrapiQuery
+	fmt.Println("STRAPI QUERY:", fieldsStrapiQuery)
+
+	return fieldsStrapiQuery, descriptionLength
 }
