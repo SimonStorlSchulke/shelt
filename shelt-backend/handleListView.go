@@ -1,12 +1,12 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/tidwall/gjson"
 )
 
 func GetAnimalListView(c *gin.Context) {
@@ -30,26 +30,18 @@ func GetAnimalListView(c *gin.Context) {
 	templateBody, err := StrapiGet(templateUrl)
 	logErr(err)
 
-	var animalCollectionStrapiData map[string]interface{}
-	var templateStrapiData map[string]interface{}
+	animalCollectionData := gjson.GetBytes(animalCollectionBody, "data").Array()
+	templateData := gjson.GetBytes(templateBody, "data.attributes").Map()
 
-	err = json.Unmarshal(animalCollectionBody, &animalCollectionStrapiData)
-	logErr(err)
-
-	json.Unmarshal(templateBody, &templateStrapiData)
-
-	animalCollectionData := animalCollectionStrapiData["data"].([]interface{})
-	templateData := templateStrapiData["data"].(map[string]interface{})["attributes"].(map[string]interface{})
-
-	var animalList []map[string]interface{}
+	var animalList []interface{}
 
 	for _, animalStrapiData := range animalCollectionData {
-		animalData := animalStrapiData.(map[string]interface{})["attributes"]
-		animalList = append(animalList, animalData.(map[string]interface{}))
+		animalData := animalStrapiData.Map()["attributes"]
+		animalList = append(animalList, animalData.Value())
 
 		logErr(err)
 	}
-	html, err := RenderTemplate(templateData["Html"].(string), animalList)
+	html, err := RenderTemplate(templateData["Html"].String(), animalList)
 
 	logErr(err)
 

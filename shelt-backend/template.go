@@ -8,9 +8,11 @@ import (
 // RenderTemplate executes a template on data and returns the fesulting html
 func RenderTemplate(templateString string, data any) (string, error) {
 
-	t := template.New("action")
+	t, err := template.New("action").Funcs(template.FuncMap{
+		"TestTemplateFunc": TestTemplateFunc,
+		"AgeFromBirthDate": AgeFromBirthDate,
+	}).Parse(templateString)
 
-	t, err := t.Parse(templateString)
 	if err != nil {
 		return "", err
 	}
