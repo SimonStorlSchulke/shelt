@@ -1,0 +1,21 @@
+{
+  "kind": "collectionType",
+  "collectionName": "article_templates",
+  "info": {
+    "singularName": "article-template",
+    "pluralName": "article-templates",
+    "displayName": "Article-Template"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Name": {
+      "type": "string"
+    },
+    "Html": {
+      "type": "text"
+    }
+  }
+}

@@ -9,12 +9,13 @@
     "build": "strapi build",
     "strapi": "strapi"
   },
-  "devDependencies": {},
   "dependencies": {
-    "@strapi/strapi": "4.8.2",
-    "@strapi/plugin-users-permissions": "4.8.2",
     "@strapi/plugin-i18n": "4.8.2",
-    "better-sqlite3": "8.0.1"
+    "@strapi/plugin-users-permissions": "4.8.2",
+    "@strapi/strapi": "4.8.2",
+    "better-sqlite3": "8.0.1",
+    "strapi-code-themes": "^1.0.2",
+    "strapi-plugin-populate-deep": "^2.0.0"
   },
   "author": {
     "name": "A Strapi developer"

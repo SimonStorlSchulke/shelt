@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_article_section_text_galleries",
+  "info": {
+    "displayName": "Text+Gallery",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "SectionTitle": {
+      "type": "string"
+    },
+    "SectionText": {
+      "type": "richtext",
+      "required": false
+    },
+    "SectionGallery": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    }
+  }
+}

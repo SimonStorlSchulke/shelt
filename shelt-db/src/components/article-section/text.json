@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_article_section_texts",
+  "info": {
+    "displayName": "Text"
+  },
+  "options": {},
+  "attributes": {
+    "SectionTitle": {
+      "type": "string"
+    },
+    "SectionText": {
+      "type": "richtext"
+    }
+  }
+}

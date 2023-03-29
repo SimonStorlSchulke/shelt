@@ -1,5 +1,7 @@
 <div class="sh-list-wrapper">
 
+<!--     {{ TestTemplateFunc "yo" }}
+ -->
     {{ range $animal := . }}
     <div class="sh-tile">
 
@@ -11,7 +13,7 @@
 
         <img src="http://localhost:1337{{$animal.Thumbnail.data.attributes.url}}">
 
-
+        {{AgeFromBirthDate $animal.BirthDate }}
         <div class="sh-tile-content">
             <h2>{{$animal.Name}}
                 {{if (eq $animal.Gender "male")}}
@@ -46,14 +48,14 @@
     }
 
     .sh-tags p {
-        background-color: rgb(235, 164, 13);
+        background-color: rgb(235, 13, 87);
         color: white;
         border-radius: 20px;
         padding: 2px 8px;
         margin: 0px;
         font-size: 12px;
         width: fit-content;
-    }
+    }de
 
     .sh-tile {
         width: 175px;

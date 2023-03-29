@@ -45,7 +45,7 @@
     "CustumArticleLink": {
       "type": "string"
     },
-    "Birthdate": {
+    "BirthDate": {
       "type": "date"
     },
     "Species": {
@@ -59,6 +59,12 @@
       "relation": "manyToMany",
       "target": "api::tag.tag",
       "mappedBy": "Animals"
+    },
+    "article": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::article.article",
+      "inversedBy": "animals"
     }
   }
 }

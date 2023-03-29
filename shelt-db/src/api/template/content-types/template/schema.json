@@ -13,10 +13,13 @@
   "pluginOptions": {},
   "attributes": {
     "Name": {
-      "type": "string"
+      "type": "string",
+      "required": true,
+      "unique": true
     },
     "Html": {
-      "type": "text"
+      "type": "text",
+      "required": true
     }
   }
 }

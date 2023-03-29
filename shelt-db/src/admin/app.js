@@ -1,0 +1,92 @@
+import themes from 'strapi-code-themes';
+
+const config = {
+  locales: [
+    // 'ar',
+    // 'fr',
+    // 'cs',
+    // 'de',
+    // 'dk',
+    // 'es',
+    // 'he',
+    // 'id',
+    // 'it',
+    // 'ja',
+    // 'ko',
+    // 'ms',
+    // 'nl',
+    // 'no',
+    // 'pl',
+    // 'pt-BR',
+    // 'pt',
+    // 'ru',
+    // 'sk',
+    // 'sv',
+    // 'th',
+    // 'tr',
+    // 'uk',
+    // 'vi',
+    // 'zh-Hans',
+    // 'zh',
+  ],
+};
+
+const bootstrap = (app) => {
+  console.log("HELLO PANEL");
+};
+
+
+export default {
+  bootstrap,
+  config: {
+    theme: {
+      colors: {
+        alternative100: '#f6ecfc',
+        alternative200: '#e0c1f4',
+        alternative500: '#ac73e6',
+        alternative600: '#9736e8',
+        alternative700: '#8312d1',
+        buttonNeutral0: '#ffffff',
+        buttonPrimary500: '#dd9663',
+        buttonPrimary600: '#c7804d',
+        danger100: '#fcecea',
+        danger200: '#f5c0b8',
+        danger500: '#ee5e52',
+        danger600: '#d02b20',
+        danger700: '#b72b1a',
+        neutral0: '#ffffff',
+        neutral100: '#f6f6f9',
+        neutral1000: '#181826',
+        neutral150: '#efedea',
+        neutral200: '#e4e0dc',
+        neutral300: '#cfc6c0',
+        neutral400: '#baada5',
+        neutral500: '#a9988e',
+        neutral600: '#876f66',
+        neutral700: '#6a564a',
+        neutral800: '#4d3a32',
+        neutral900: '#342621',
+        primary100: '#fffdf0',
+        primary200: '#fffed8',
+        primary500: '#ffc979',
+        primary600: '#ee8631',
+        primary700: '#d3611f',
+        secondary100: '#fff3ea',
+        secondary200: '#fcc299',
+        secondary500: '#fab685',
+        secondary600: '#e9a472',
+        secondary700: '#be7c4d',
+        success100: '#eafbe7',
+        success200: '#c6f0c2',
+        success500: '#5cb176',
+        success600: '#328048',
+        success700: '#2f6846',
+        warning100: '#fdf4dc',
+        warning200: '#fae7b9',
+        warning500: '#f29d41',
+        warning600: '#d9822f',
+        warning700: '#be5d01',
+      }
+    },
+  },
+};
