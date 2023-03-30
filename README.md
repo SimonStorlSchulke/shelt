@@ -22,8 +22,10 @@ To develop shelt locally, you need:
 
 **Rendering Route Examples (localhost:8080...)**
 
-|||
+|decription|route|
 |-|-|
 | render animal[3] with template[1] of all animals | /animal-view?animal-id=3&template-id=1 |
 | render list with list-template[2] of all animals | /animal-collection-view?template-id=2 |
 | ..of animals with Tags "tag1" or "tag2" | /animal-collection-view?template-id=2&tags=tag1,tag2 |
+
+HTML Template Examples [here](https://github.com/SimonStorlSchulke/shelt/tree/master/shelt-backend/template-presets):
