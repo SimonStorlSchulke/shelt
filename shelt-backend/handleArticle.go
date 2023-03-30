@@ -1,33 +1,50 @@
 package main
 
 import (
-	"encoding/json"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/tidwall/gjson"
 )
+
+func toAttributes() {
+
+}
 
 func GetArticle(c *gin.Context) {
 
-	animalUrl := "animals/" + c.Query("animal-id")
-	templateUrl := "templates/" + c.Query("template-id")
+	articleUrl := "articles/" + c.Param("id")
+	templateUrl := "article-templates/" + c.Query("template-id")
 
-	animalBody, err := StrapiGet(animalUrl + "?populate=*")
+	articleBody, err := StrapiGet(articleUrl + "?populate=deep")
 	logErr(err)
 
 	templateBody, err := StrapiGet(templateUrl)
 	logErr(err)
 
-	var animalStrapiData gin.H
-	var templateStrapiData gin.H
+	articleData := gjson.GetBytes(articleBody, "data.attributes").Value()
+	animalData := gjson.GetBytes(articleBody, "data.attributes.Animals.data").Value().([]interface{})
 
-	json.Unmarshal(animalBody, &animalStrapiData)
-	json.Unmarshal(templateBody, &templateStrapiData)
+	var an []interface{} = make([]interface{}, len(animalData))
 
-	animalData := animalStrapiData["data"].(gin.H)["attributes"]
-	templateData := templateStrapiData["data"].(gin.H)["attributes"].(gin.H)
+	//de-nest Animal Data
+	for i, animal := range animalData {
+		an[i] = animal.(map[string]interface{})["attributes"]
+	}
 
-	html, err := RenderTemplate(templateData["Html"].(string), animalData.(gin.H))
+	adjustedArticleData := make(map[string]interface{})
+
+	for k, r := range articleData.(map[string]interface{}) {
+		if k != "Animals" {
+			adjustedArticleData[k] = r
+		}
+	}
+
+	adjustedArticleData["Animals"] = an
+
+	templateData := gjson.GetBytes(templateBody, "data.attributes").Map()
+
+	html, err := RenderTemplate(templateData["Html"].String(), adjustedArticleData)
 
 	logErr(err)
 

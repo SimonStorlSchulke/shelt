@@ -6,14 +6,14 @@
   },
   "options": {},
   "attributes": {
-    "SectionTitle": {
+    "Title": {
       "type": "string"
     },
-    "SectionText": {
+    "Text": {
       "type": "richtext",
       "required": false
     },
-    "SectionGallery": {
+    "Gallery": {
       "type": "media",
       "multiple": true,
       "required": false,

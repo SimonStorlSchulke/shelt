@@ -1,14 +1,15 @@
 {
   "collectionName": "components_article_section_texts",
   "info": {
-    "displayName": "Text"
+    "displayName": "Text",
+    "description": ""
   },
   "options": {},
   "attributes": {
-    "SectionTitle": {
+    "Title": {
       "type": "string"
     },
-    "SectionText": {
+    "Text": {
       "type": "richtext"
     }
   }

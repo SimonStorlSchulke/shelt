@@ -64,7 +64,7 @@
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::article.article",
-      "inversedBy": "animals"
+      "inversedBy": "Animals"
     }
   }
 }

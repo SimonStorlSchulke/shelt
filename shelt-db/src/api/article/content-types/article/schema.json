@@ -12,7 +12,7 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "animals": {
+    "Animals": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::animal.animal",
@@ -26,7 +26,7 @@
       ],
       "required": true
     },
-    "article_template": {
+    "ArticleTemplate": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::article-template.article-template"
