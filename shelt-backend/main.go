@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"log"
 	"math"
 	"os"
@@ -21,7 +22,14 @@ type M map[string]interface{}
 
 var strapiKey string = os.Args[1]
 
+var defaultTemplates *template.Template
+
 func init() {
+
+	var err error
+	defaultTemplates, _ = template.New("defaulttemplates").Funcs(templateFuncs).ParseGlob("./template-defaults/*.html")
+	logErr(err)
+
 	recollectArticleIds()
 	go func() {
 		for range time.Tick(time.Second * 30) {
@@ -37,7 +45,8 @@ func main() {
 	r.GET("/animals", GetAnimalCollection)
 	r.GET("/article/:id", GetArticle)
 	r.GET("/animal-view", GetAnimalView)
-	r.GET("/animal-collection-view", GetAnimalListView)
+	r.GET("/animal-list/:type", GetAnimalListView)
+	r.GET("/uploads/:route", strapiUploads)
 	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
 

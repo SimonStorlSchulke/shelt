@@ -11,6 +11,8 @@ import (
 
 func GetAnimalListView(c *gin.Context) {
 
+	listType := c.Param("type")
+
 	animalsUrl := "animals?populate=*"
 
 	tagsString := c.Query("tags")
@@ -37,14 +39,29 @@ func GetAnimalListView(c *gin.Context) {
 		logErr(err)
 	}
 
-	templateUrl := "list-templates/" + c.Query("template-id")
-	templateBody, err := StrapiGet(templateUrl)
-	templateData := gjson.GetBytes(templateBody, "data.attributes").Map()
-	logErr(err)
+	templateId := c.Query("template-id")
 
-	html, err := RenderTemplate(templateData["Html"].String(), animalList)
+	var html []byte
 
-	logErr(err)
+	if templateId != "" {
+		templateUrl := "list-templates/" + templateId
+		templateBody, err := StrapiGet(templateUrl)
+		templateData := gjson.GetBytes(templateBody, "data.attributes").Map()
+		logErr(err)
+		html, err = RenderTemplate(templateData["Html"].String(), animalList)
+	} else {
+		switch listType {
+		case "table":
+			html, err = RenderTemplateFile("list-table.html", animalList)
+		default:
+			html, err = RenderTemplateFile("list-tiles.html", animalList)
+		}
+	}
 
-	c.Data(http.StatusOK, "text/html; charset=utf-8", html.Bytes())
+	if err != nil {
+		logErr(err)
+		return
+	}
+
+	c.Data(http.StatusOK, "text/html; charset=utf-8", html)
 }

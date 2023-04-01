@@ -25,5 +25,5 @@ func GetAnimalView(c *gin.Context) {
 
 	logErr(err)
 
-	c.Data(http.StatusOK, "text/html; charset=utf-8", html.Bytes())
+	c.Data(http.StatusOK, "text/html; charset=utf-8", html)
 }

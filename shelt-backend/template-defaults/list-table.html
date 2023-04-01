@@ -13,8 +13,8 @@
     </thead>
     <tbody>
       {{ range $animal := . }}
-      <tr onclick='location.href="https://google.de"'>
-        <td style="padding-left: 0px"><img src="http://localhost:8082{{$animal.Thumbnail.data.attributes.url}}" /></td>
+      <tr onclick='location.href="{{ArticleLink $animal}}"'>
+        <td style="padding-left: 0px"><img src="{{$animal.Thumbnail.data.attributes.url}}" /></td>
         <td>{{$animal.Name}}</td>
         <td>{{$animal.Species}}</td>
         <td>{{if (eq $animal.Gender "male")}} ♂ {{else}} ♀ {{end}}</td>

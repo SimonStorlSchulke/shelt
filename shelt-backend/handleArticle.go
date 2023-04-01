@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -16,7 +15,7 @@ func GetArticle(c *gin.Context) {
 
 	articleUrl := "articles/" + c.Param("id")
 
-	articleBody, err := StrapiGet(articleUrl + "?populate=deep")
+	articleBody, err := StrapiGet(articleUrl + "?populate=deep,3")
 	if err != nil {
 		c.Data(http.StatusOK, "text/html; charset=utf-8", []byte("<p>505 Bad Gateway</p>"))
 		return
@@ -44,7 +43,7 @@ func GetArticle(c *gin.Context) {
 
 	templateId := c.Query("template-id")
 
-	var html bytes.Buffer
+	var html []byte
 
 	if templateId != "" {
 		templateUrl := "article-templates/" + templateId
@@ -53,10 +52,12 @@ func GetArticle(c *gin.Context) {
 		templateData := gjson.GetBytes(templateBody, "data.attributes").Map()
 		html, err = RenderTemplate(templateData["Html"].String(), adjustedArticleData)
 	} else {
-		html, err = RenderTemplateFile("./template-defaults/article-default.html", adjustedArticleData)
+		html, err = RenderTemplateFile("article-default.html", adjustedArticleData)
 	}
 
 	logErr(err)
 
-	c.Data(http.StatusOK, "text/html; charset=utf-8", html.Bytes())
+	addArticleLinks(&html)
+
+	c.Data(http.StatusOK, "text/html; charset=utf-8", html)
 }

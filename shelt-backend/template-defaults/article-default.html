@@ -8,8 +8,9 @@
     <h3>{{$animal.Race}}</h3>
 
     <p>Kastriert: {{if $animal.Castrated}} Ja {{else}} Nein {{end}}</p>
+    <p>Alter: {{Age $animal }}</p>
 
-    <img class="img-main" src="http://localhost:8082{{$animal.Thumbnail.data.attributes.url}}" />
+    <img class="img-main" src="{{$animal.Thumbnail.data.attributes.url}}" />
   </div>
 
   {{ $ct := .Content }} {{ range $section := $ct }}
@@ -29,7 +30,7 @@
         <ul class="slides-container">
           {{ range $k, $v := $section.Gallery.data }}
           <div class="slide gallery-entry">
-            <img class="gallery-img" src="http://localhost:8082{{$v.attributes.url}}" />
+            <img class="gallery-img" src="{{$v.attributes.url}}" />
             <p>{{$v.attributes.caption}}</p>
           </div>
           {{ end }}
@@ -51,10 +52,10 @@
 
 <script>
   //whilte development
-  window.setInterval(() => {
+  /*   window.setInterval(() => {
     location.reload();
   }, 50000);
-
+ */
   document.querySelectorAll(".gallery").forEach((gallery) => {
     const slide = gallery.querySelector(".slide");
     const slidesContainer = gallery.querySelector(".slides-container");

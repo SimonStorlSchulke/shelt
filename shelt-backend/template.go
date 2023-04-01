@@ -7,17 +7,10 @@ import (
 	"regexp"
 )
 
-var templateFuncs template.FuncMap = template.FuncMap{
-	"TestTemplateFunc": TestTemplateFunc,
-	"AgeFromBirthDate": AgeFromBirthDate,
-}
-
-func addArticleLinks(html *bytes.Buffer) *bytes.Buffer {
+func addArticleLinks(json *[]byte) {
 	rx := regexp.MustCompile(`\(\(.*?\)\)`)
 
-	matches := rx.FindAll(html.Bytes(), -1)
-
-	var b []byte = html.Bytes()
+	matches := rx.FindAll(*json, -1)
 
 	for _, match := range matches {
 
@@ -26,52 +19,65 @@ func addArticleLinks(html *bytes.Buffer) *bytes.Buffer {
 
 		if id, ok := animalArticleIds[animalName]; ok {
 			link := []byte(fmt.Sprintf(`<a href="/article/%v">%s</a>`, id, animalName))
-			b = bytes.ReplaceAll(b, match, link)
+			*json = bytes.ReplaceAll(*json, match, link)
 		} else {
-			b = bytes.ReplaceAll(b, match, []byte(animalName))
+			*json = bytes.ReplaceAll(*json, match, []byte(animalName))
 		}
 	}
-	return bytes.NewBuffer(b)
 }
 
 // RenderTemplate executes a template on data and returns the fesulting html
-func RenderTemplate(templateString string, data any) (bytes.Buffer, error) {
+func RenderTemplate(templateString string, data any) ([]byte, error) {
 	t, err := template.New("action").Funcs(templateFuncs).Parse(templateString)
 
 	var tpl bytes.Buffer
 	if err != nil {
-		return tpl, err
+		return tpl.Bytes(), err
 	}
-	//data = addArticleLinks(data)
+
 	if err := t.Execute(&tpl, data); err != nil {
-		return tpl, err
+		return tpl.Bytes(), err
 	}
 
-	//tpl = addDogLinks(&tpl)
-
-	newH := addArticleLinks(&tpl)
-
-	return *newH, nil
+	return tpl.Bytes(), nil
 }
 
 // RenderTemplateFile executes a template file on data and returns the fesulting html
-func RenderTemplateFile(path string, data any) (bytes.Buffer, error) {
-
-	t, err := template.ParseFiles(path)
-
-	t.Funcs(template.FuncMap(templateFuncs))
+func RenderTemplateFileOld(path string, data any) ([]byte, error) {
 
 	var tpl bytes.Buffer
 
+	t, err := template.ParseFiles(path)
 	if err != nil {
-		return tpl, err
+		return tpl.Bytes(), err
+	}
+
+	t.Funcs(template.FuncMap(templateFuncs))
+
+	if err != nil {
+		return tpl.Bytes(), err
 	}
 
 	if err := t.Execute(&tpl, data); err != nil {
-		return tpl, err
+		logErr(err)
+		return tpl.Bytes(), err
 	}
 
-	newH := addArticleLinks(&tpl)
+	return tpl.Bytes(), nil
+}
 
-	return *newH, nil
+// RenderTemplateFile executes a template file on data and returns the fesulting html
+func RenderTemplateFile(filePath string, data any) ([]byte, error) {
+	//not necessary in prod
+	defaultTemplates, _ = template.New("defaulttemplates").Funcs(templateFuncs).ParseGlob("./template-defaults/*.html")
+
+	var tpl bytes.Buffer
+
+	if err := defaultTemplates.ExecuteTemplate(&tpl, filePath, data); err != nil {
+		fmt.Println("GO SO MUCH", err)
+		logErr(err)
+		return tpl.Bytes(), err
+	}
+
+	return tpl.Bytes(), nil
 }

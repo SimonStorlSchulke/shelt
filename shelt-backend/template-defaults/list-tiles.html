@@ -1,8 +1,6 @@
 <div class="sh-list-wrapper">
-  <!--     {{ TestTemplateFunc "yo" }}
- -->
   {{ range $animal := . }}
-  <div class="sh-tile">
+  <a href="{{ArticleLink $animal}}" class="sh-tile">
     <div class="sh-tags">
       {{ range $tag := $animal.Tags.data }}
       <!--TODO - this is horrible syntax. In the future, this should be doable with .. := $animal.Tags-->
@@ -11,13 +9,13 @@
       {{end}}
     </div>
 
-    <img src="http://localhost:8082{{$animal.Thumbnail.data.attributes.url}}" />
+    <img src="{{$animal.Thumbnail.data.attributes.url}}" />
 
-    {{AgeFromBirthDate $animal.BirthDate }}
     <div class="sh-tile-content">
       <h2>{{$animal.Name}} {{if (eq $animal.Gender "male")}} ♂ {{else}} ♀ {{end}}</h2>
+      <p>{{Age $animal }}</p>
     </div>
-  </div>
+  </a>
   {{ end }}
 </div>
 
@@ -53,6 +51,8 @@
     width: 175px;
     background-color: #d8d8d8;
     border-radius: 5px;
+    color: rgb(34, 34, 34);
+    text-decoration: none; /* no underline */
   }
 
   .sh-tile img {
