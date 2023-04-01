@@ -10,29 +10,35 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const STRAPI_BASE_URL = "http://localhost:1337/api/"
+const STRAPI_BASE_URL = "http://localhost:8082/api/"
 
 // StrapiGet
 func StrapiGet(url string) ([]byte, error) {
 	fmt.Println("Request api:", url)
 	req, err := http.NewRequest("GET", STRAPI_BASE_URL+url, nil)
+
 	if err != nil {
 		return nil, err
 	}
 	req.Header.Add("Authorization", "Bearer "+strapiKey)
 	client := &http.Client{}
 	resp, err := client.Do(req)
+
 	if err != nil {
 		return nil, err
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 
-	defer resp.Body.Close()
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println("STATUSCODE", resp.StatusCode)
+	if resp.StatusCode != 200 {
+		return nil, http.ErrNoLocation
+	}
 
+	defer resp.Body.Close()
 	return body, nil
 }
 

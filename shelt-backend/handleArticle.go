@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -14,13 +15,12 @@ func toAttributes() {
 func GetArticle(c *gin.Context) {
 
 	articleUrl := "articles/" + c.Param("id")
-	templateUrl := "article-templates/" + c.Query("template-id")
 
 	articleBody, err := StrapiGet(articleUrl + "?populate=deep")
-	logErr(err)
-
-	templateBody, err := StrapiGet(templateUrl)
-	logErr(err)
+	if err != nil {
+		c.Data(http.StatusOK, "text/html; charset=utf-8", []byte("<p>505 Bad Gateway</p>"))
+		return
+	}
 
 	articleData := gjson.GetBytes(articleBody, "data.attributes").Value()
 	animalData := gjson.GetBytes(articleBody, "data.attributes.Animals.data").Value().([]interface{})
@@ -42,11 +42,21 @@ func GetArticle(c *gin.Context) {
 
 	adjustedArticleData["Animals"] = an
 
-	templateData := gjson.GetBytes(templateBody, "data.attributes").Map()
+	templateId := c.Query("template-id")
 
-	html, err := RenderTemplate(templateData["Html"].String(), adjustedArticleData)
+	var html bytes.Buffer
+
+	if templateId != "" {
+		templateUrl := "article-templates/" + templateId
+		templateBody, err := StrapiGet(templateUrl)
+		logErr(err)
+		templateData := gjson.GetBytes(templateBody, "data.attributes").Map()
+		html, err = RenderTemplate(templateData["Html"].String(), adjustedArticleData)
+	} else {
+		html, err = RenderTemplateFile("./template-defaults/article-default.html", adjustedArticleData)
+	}
 
 	logErr(err)
 
-	c.Data(http.StatusOK, "text/html; charset=utf-8", []byte(html))
+	c.Data(http.StatusOK, "text/html; charset=utf-8", html.Bytes())
 }

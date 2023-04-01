@@ -2,27 +2,76 @@ package main
 
 import (
 	"bytes"
+	"fmt"
 	"html/template"
+	"regexp"
 )
 
-// RenderTemplate executes a template on data and returns the fesulting html
-func RenderTemplate(templateString string, data any) (string, error) {
+var templateFuncs template.FuncMap = template.FuncMap{
+	"TestTemplateFunc": TestTemplateFunc,
+	"AgeFromBirthDate": AgeFromBirthDate,
+}
 
-	t, err := template.New("action").Funcs(template.FuncMap{
-		"TestTemplateFunc": TestTemplateFunc,
-		"AgeFromBirthDate": AgeFromBirthDate,
-	}).Parse(templateString)
+func addArticleLinks(html *bytes.Buffer) *bytes.Buffer {
+	rx := regexp.MustCompile(`\(\(.*?\)\)`)
 
-	if err != nil {
-		return "", err
+	matches := rx.FindAll(html.Bytes(), -1)
+
+	var b []byte = html.Bytes()
+
+	for _, match := range matches {
+
+		animalName := string(match)
+		animalName = animalName[2 : len(animalName)-2] // "((animalname))"" --> "animalname"
+
+		if id, ok := animalArticleIds[animalName]; ok {
+			link := []byte(fmt.Sprintf(`<a href="/article/%v">%s</a>`, id, animalName))
+			b = bytes.ReplaceAll(b, match, link)
+		} else {
+			b = bytes.ReplaceAll(b, match, []byte(animalName))
+		}
 	}
+	return bytes.NewBuffer(b)
+}
+
+// RenderTemplate executes a template on data and returns the fesulting html
+func RenderTemplate(templateString string, data any) (bytes.Buffer, error) {
+	t, err := template.New("action").Funcs(templateFuncs).Parse(templateString)
 
 	var tpl bytes.Buffer
+	if err != nil {
+		return tpl, err
+	}
+	//data = addArticleLinks(data)
 	if err := t.Execute(&tpl, data); err != nil {
-		return "", err
+		return tpl, err
 	}
 
-	result := tpl.String()
+	//tpl = addDogLinks(&tpl)
 
-	return result, nil
+	newH := addArticleLinks(&tpl)
+
+	return *newH, nil
+}
+
+// RenderTemplateFile executes a template file on data and returns the fesulting html
+func RenderTemplateFile(path string, data any) (bytes.Buffer, error) {
+
+	t, err := template.ParseFiles(path)
+
+	t.Funcs(template.FuncMap(templateFuncs))
+
+	var tpl bytes.Buffer
+
+	if err != nil {
+		return tpl, err
+	}
+
+	if err := t.Execute(&tpl, data); err != nil {
+		return tpl, err
+	}
+
+	newH := addArticleLinks(&tpl)
+
+	return *newH, nil
 }

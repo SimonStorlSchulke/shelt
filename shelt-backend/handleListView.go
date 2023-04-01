@@ -11,7 +11,6 @@ import (
 
 func GetAnimalListView(c *gin.Context) {
 
-	templateUrl := "list-templates/" + c.Query("template-id")
 	animalsUrl := "animals?populate=*"
 
 	tagsString := c.Query("tags")
@@ -27,11 +26,7 @@ func GetAnimalListView(c *gin.Context) {
 	animalCollectionBody, err := StrapiGet(animalsUrl)
 	logErr(err)
 
-	templateBody, err := StrapiGet(templateUrl)
-	logErr(err)
-
 	animalCollectionData := gjson.GetBytes(animalCollectionBody, "data").Array()
-	templateData := gjson.GetBytes(templateBody, "data.attributes").Map()
 
 	var animalList []interface{}
 
@@ -41,9 +36,15 @@ func GetAnimalListView(c *gin.Context) {
 
 		logErr(err)
 	}
+
+	templateUrl := "list-templates/" + c.Query("template-id")
+	templateBody, err := StrapiGet(templateUrl)
+	templateData := gjson.GetBytes(templateBody, "data.attributes").Map()
+	logErr(err)
+
 	html, err := RenderTemplate(templateData["Html"].String(), animalList)
 
 	logErr(err)
 
-	c.Data(http.StatusOK, "text/html; charset=utf-8", []byte(html))
+	c.Data(http.StatusOK, "text/html; charset=utf-8", html.Bytes())
 }

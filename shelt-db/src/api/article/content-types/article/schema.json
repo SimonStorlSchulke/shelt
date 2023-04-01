@@ -12,12 +12,6 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "Animals": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::animal.animal",
-      "mappedBy": "article"
-    },
     "Content": {
       "type": "dynamiczone",
       "components": [
@@ -33,6 +27,12 @@
     },
     "Name": {
       "type": "string"
+    },
+    "Animals": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::animal.animal",
+      "mappedBy": "Article"
     }
   }
 }

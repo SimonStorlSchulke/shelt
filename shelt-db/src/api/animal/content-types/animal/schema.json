@@ -37,7 +37,7 @@
     "Shoulderheight": {
       "type": "integer",
       "required": true,
-      "default": 35
+      "default": 40
     },
     "Description": {
       "type": "richtext"
@@ -49,10 +49,12 @@
       "type": "date"
     },
     "Species": {
-      "type": "string"
+      "type": "string",
+      "default": "Hund"
     },
     "Race": {
-      "type": "string"
+      "type": "string",
+      "default": "Mischling"
     },
     "Tags": {
       "type": "relation",
@@ -60,11 +62,16 @@
       "target": "api::tag.tag",
       "mappedBy": "Animals"
     },
-    "article": {
+    "Article": {
       "type": "relation",
       "relation": "manyToOne",
       "target": "api::article.article",
       "inversedBy": "Animals"
+    },
+    "Location": {
+      "type": "string",
+      "default": "Shelter",
+      "required": true
     }
   }
 }

@@ -20,6 +20,11 @@
       "allowedTypes": [
         "images"
       ]
+    },
+    "Carousel": {
+      "type": "boolean",
+      "required": true,
+      "default": true
     }
   }
 }

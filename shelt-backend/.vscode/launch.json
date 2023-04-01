@@ -9,7 +9,8 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "."
+            "program": ".",
+            "args": ["e882fa79570beeaa2fea5be30332e1f7528f804aa6658359d5cec2f2d8dd137921bc27e0dd1ee721d54d26a7f09d0117bf2b71aacd1d35abb993f3ed00d0e491246f63a08cfecf5015662e9b3f52792736749845580df05b4629cb5cb7d12c5c39e9fbbcd7893c59bc86b46d0b18b4687237aed7ac7a6bf5f61ea77cbda229a7"]
         }
     ]
 }

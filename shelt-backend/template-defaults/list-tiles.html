@@ -1,0 +1,70 @@
+<div class="sh-list-wrapper">
+  <!--     {{ TestTemplateFunc "yo" }}
+ -->
+  {{ range $animal := . }}
+  <div class="sh-tile">
+    <div class="sh-tags">
+      {{ range $tag := $animal.Tags.data }}
+      <!--TODO - this is horrible syntax. In the future, this should be doable with .. := $animal.Tags-->
+      <p>{{$tag.attributes.Name}}</p>
+      <!--...and $tag.Name-->
+      {{end}}
+    </div>
+
+    <img src="http://localhost:8082{{$animal.Thumbnail.data.attributes.url}}" />
+
+    {{AgeFromBirthDate $animal.BirthDate }}
+    <div class="sh-tile-content">
+      <h2>{{$animal.Name}} {{if (eq $animal.Gender "male")}} ♂ {{else}} ♀ {{end}}</h2>
+    </div>
+  </div>
+  {{ end }}
+</div>
+
+<style>
+  .sh-list-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .sh-tags {
+    position: absolute;
+    height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    padding: 5px;
+    gap: 3px;
+  }
+
+  .sh-tags p {
+    background-color: rgb(235, 13, 87);
+    color: white;
+    border-radius: 20px;
+    padding: 2px 8px;
+    margin: 0px;
+    font-size: 12px;
+    width: fit-content;
+  }
+
+  .sh-tile {
+    width: 175px;
+    background-color: #d8d8d8;
+    border-radius: 5px;
+  }
+
+  .sh-tile img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    overflow: hidden;
+    border-radius: 5px 5px 0px 0px;
+  }
+
+  .sh-tile-content {
+    padding: 5px;
+    text-align: center;
+  }
+</style>

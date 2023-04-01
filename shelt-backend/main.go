@@ -3,9 +3,12 @@ package main
 import (
 	"fmt"
 	"log"
+	"math"
 	"os"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/tidwall/gjson"
 )
 
 func logErr(err error) {
@@ -18,8 +21,18 @@ type M map[string]interface{}
 
 var strapiKey string = os.Args[1]
 
+func init() {
+	recollectArticleIds()
+	go func() {
+		for range time.Tick(time.Second * 30) {
+			recollectArticleIds()
+		}
+	}()
+}
+
 func main() {
 	r := gin.Default()
+	r.Static("/static", "./static")
 	r.GET("/animal/:id", GetAnimalFieldsById)
 	r.GET("/animals", GetAnimalCollection)
 	r.GET("/article/:id", GetArticle)
@@ -28,16 +41,22 @@ func main() {
 	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }
 
-func mainN() {
-	data := make(map[string]interface{})
-	data["Key"] = "TEST"
-	str, err := RenderTemplate("<h1>{{.Key}}</h1>", data)
+var animalArticleIds map[string]int = make(map[string]int)
+
+func recollectArticleIds() {
+	fmt.Println("recollect article links")
+
+	data, err := StrapiGet("animals?fields[0]=Name&fields[1]=CustumArticleLink&populate=Article&pagination[pageSize]=10000")
 	if err != nil {
-		fmt.Println(err)
 	}
-	fmt.Println(str)
-	//r := gin.Default()
-	//r.GET("/animal/:id", GetAnimalFieldsById)
-	//r.GET("/animals", GetAnimalCollection)
-	//r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
+
+	animals := gjson.GetBytes(data, "data").Array()
+
+	for _, animal := range animals {
+		animalName := gjson.Get(animal.Raw, "attributes.Name").String()
+		articleId := gjson.Get(animal.Raw, "attributes.Article.data.id").Value()
+		if articleId != nil {
+			animalArticleIds[animalName] = int(math.Floor(articleId.(float64)))
+		}
+	}
 }
